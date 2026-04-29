@@ -1,36 +1,118 @@
+"use client"
+
 import { FiEdit2, FiTrash2, FiDownload } from "react-icons/fi"
 import { FaRegHandPaper } from "react-icons/fa"
 import { BsEraser } from "react-icons/bs"
+import {
+  Popover,
+  PopoverTrigger,
+  PopoverContent,
+  Slider,
+  Label,
+} from "@heroui/react"
+import useLeftToolbar from "./useLeftToolbar"
 
 export default function LeftToolbar() {
+  const {
+    activeTool,
+    setTool,
+    strokeColor,
+    handleColorChange,
+    strokeWidth,
+    setStrokeWidth,
+  } = useLeftToolbar()
+
   return (
-    <div className="absolute left-4 top-1/2 -translate-y-1/2 bg-white rounded-xl shadow-md border border-gray-100 p-2 flex flex-col items-center gap-3 w-12 z-10">
+    <div className="absolute left-4 top-1/2 -translate-y-1/2 bg-white rounded-xl shadow-md border border-gray-100 p-2 flex flex-col items-center gap-3 w-15 z-10">
       {/* Tools */}
-      <button className="p-2 bg-blue-50 text-blue-600 rounded-lg transition-colors bg-opacity-50">
+      <button
+        onClick={() => setTool("pen")}
+        className={`p-2 hover:text-gray-800 hover:bg-gray-100 cursor-pointer rounded-lg transition-colors ${
+          activeTool === "pen"
+            ? "bg-blue-50 text-blue-600"
+            : "text-gray-500 hover:text-gray-800 hover:bg-gray-100"
+        }`}
+      >
         <FiEdit2 className="text-lg" />
       </button>
-      <button className="p-2 text-gray-500 hover:text-gray-800 hover:bg-gray-100 rounded-lg transition-colors">
+
+      <button
+        onClick={() => setTool("eraser")}
+        className={`p-2 hover:text-gray-800 hover:bg-gray-100 rounded-lg transition-colors cursor-pointer ${activeTool === "eraser" ? "bg-blue-50 text-blue-600" : "text-gray-500 hover:text-gray-800 hover:bg-gray-100"}`}
+      >
         <BsEraser className="text-lg" />
       </button>
-      <button className="p-2 text-gray-500 hover:text-gray-800 hover:bg-gray-100 rounded-lg transition-colors">
+
+      <button
+        onClick={() => setTool("hand")}
+        className={`p-2 hover:text-gray-800 hover:bg-gray-100 rounded-lg transition-colors cursor-pointer ${activeTool === "hand" ? "bg-blue-50 text-blue-600" : "text-gray-500 hover:text-gray-800 hover:bg-gray-100"}`}
+      >
         <FaRegHandPaper className="text-lg" />
       </button>
-      
-      {/* Properties */}
-      <button className="p-2 w-full flex items-center justify-center hover:bg-gray-100 rounded-lg transition-colors">
-        <div className="w-4 h-4 rounded-full bg-black"></div>
-      </button>
-      <button className="p-2 w-full flex items-center justify-center hover:bg-gray-100 rounded-lg transition-colors">
-        <div className="w-1.5 h-1.5 rounded-full bg-black"></div>
-      </button>
-      
+
       <div className="w-6 border-b border-gray-200 my-1"></div>
-      
+
+      {/* Properties */}
+      <div className="relative w-full flex items-center justify-center p-2 hover:bg-gray-100 rounded-lg transition-colors cursor-pointer overflow-hidden group">
+        <input
+          type="color"
+          value={strokeColor}
+          onChange={handleColorChange}
+          className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
+          title="Change color"
+        />
+        <div
+          className="w-6 h-6 border border-gray-300 shadow-sm pointer-events-none group-hover:scale-110 transition-transform flex-shrink-0"
+          style={{ backgroundColor: strokeColor }}
+        ></div>
+      </div>
+
+      <Popover>
+        <PopoverTrigger>
+          <button
+            className="p-2 w-full flex items-center justify-center hover:bg-gray-100 rounded-lg transition-colors cursor-pointer"
+            title="Change brush size"
+          >
+            <div
+              className="rounded-full transition-all"
+              style={{
+                width: 20,
+                height: 20,
+                backgroundColor: strokeColor,
+              }}
+            ></div>
+          </button>
+        </PopoverTrigger>
+        <PopoverContent placement="right">
+          <div className="px-4 py-3 w-48">
+            <Slider
+              aria-label="Brush size"
+              step={1}
+              minValue={1}
+              maxValue={32}
+              defaultValue={8}
+              value={strokeWidth}
+              onChange={value => setStrokeWidth(value as number)}
+              className="max-w-md"
+            >
+              <Label>Brush Size</Label>
+              <Slider.Output />
+              <Slider.Track>
+                <Slider.Fill />
+                <Slider.Thumb />
+              </Slider.Track>
+            </Slider>
+          </div>
+        </PopoverContent>
+      </Popover>
+
+      <div className="w-6 border-b border-gray-200 my-1"></div>
+
       {/* Actions */}
-      <button className="p-2 text-gray-500 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors">
+      <button className="p-2 text-gray-500 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors cursor-pointer">
         <FiTrash2 className="text-lg" />
       </button>
-      <button className="p-2 text-gray-500 hover:text-gray-800 hover:bg-gray-100 rounded-lg transition-colors">
+      <button className="p-2 text-gray-500 hover:text-gray-800 hover:bg-gray-100 rounded-lg transition-colors cursor-pointer">
         <FiDownload className="text-lg" />
       </button>
     </div>
