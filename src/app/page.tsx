@@ -1,10 +1,12 @@
-import { Button } from "@heroui/react";
+import HomeLayout from "../../components/layouts/HomeLayout/HomeLayout"
+import HomeView from "../../components/views/Home"
 
 export default function Home() {
   return (
-    <div className="relative flex flex-col text-black">
-      <h1 className="font-bold text-2xl">Sketchly</h1>
-      <Button variant="primary">Test</Button>
-    </div>
-  );
+    <>
+      <HomeLayout>
+        <HomeView />
+      </HomeLayout>
+    </>
+  )
 }
