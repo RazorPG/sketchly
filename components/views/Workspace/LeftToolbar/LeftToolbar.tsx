@@ -20,6 +20,8 @@ export default function LeftToolbar() {
     handleColorChange,
     strokeWidth,
     setStrokeWidth,
+    clearCanvas,
+    downloadAsJpeg
   } = useLeftToolbar()
 
   return (
@@ -109,10 +111,18 @@ export default function LeftToolbar() {
       <div className="w-6 border-b border-gray-200 my-1"></div>
 
       {/* Actions */}
-      <button className="p-2 text-gray-500 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors cursor-pointer">
+      <button 
+        onClick={clearCanvas}
+        title="Clear canvas"
+        className="p-2 text-gray-500 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors cursor-pointer"
+      >
         <FiTrash2 className="text-lg" />
       </button>
-      <button className="p-2 text-gray-500 hover:text-gray-800 hover:bg-gray-100 rounded-lg transition-colors cursor-pointer">
+      <button 
+        onClick={downloadAsJpeg}
+        title="Download drawing"
+        className="p-2 text-gray-500 hover:text-gray-800 hover:bg-gray-100 rounded-lg transition-colors cursor-pointer"
+      >
         <FiDownload className="text-lg" />
       </button>
     </div>

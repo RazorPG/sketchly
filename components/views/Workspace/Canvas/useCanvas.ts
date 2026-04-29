@@ -1,15 +1,10 @@
 import { useState, useRef, PointerEvent } from "react"
-import { useWorkspace } from "../../../../contexts/WorkspaceContext"
-
-export type Point = { x: number; y: number }
-export type Stroke = { id: string; points: Point[]; color: string; width: number }
+import { useWorkspace, Point, Stroke } from "../../../../contexts/WorkspaceContext"
 
 export default function useCanvas() {
-  const { activeTool, strokeColor, strokeWidth } = useWorkspace()
-  const [strokes, setStrokes] = useState<Stroke[]>([])
+  const { activeTool, strokeColor, strokeWidth, strokes, setStrokes } = useWorkspace()
   const [currentPoints, setCurrentPoints] = useState<Point[]>([])
   const isDrawing = useRef(false)
-  const isErasing = useRef(false)
   const isPanning = useRef(false)
   const lastPanPoint = useRef({ x: 0, y: 0 })
 
@@ -28,8 +23,6 @@ export default function useCanvas() {
       isDrawing.current = true
       const startPoint = getCoordinates(e)
       setCurrentPoints([startPoint])
-    } else if (activeTool === "eraser") {
-      isErasing.current = true
     } else if (activeTool === "hand") {
       e.currentTarget.setPointerCapture(e.pointerId)
       isPanning.current = true
@@ -71,14 +64,7 @@ export default function useCanvas() {
         setCurrentPoints([])
       }
     }
-    isErasing.current = false
     isPanning.current = false
-  }
-
-  const handlePointerLeave = () => {
-    if (activeTool !== "pen") {
-      isErasing.current = false
-    }
   }
 
   const handleStrokePointerDown = (e: PointerEvent<SVGPathElement>, id: string) => {
@@ -88,7 +74,7 @@ export default function useCanvas() {
   }
 
   const handleStrokePointerEnter = (e: PointerEvent<SVGPathElement>, id: string) => {
-    if (activeTool === "eraser" && isErasing.current) {
+    if (activeTool === "eraser" && (e.buttons === 1 || e.pressure > 0)) {
       setStrokes(prev => prev.filter(s => s.id !== id))
     }
   }
@@ -109,7 +95,6 @@ export default function useCanvas() {
     startInteraction,
     draw,
     stopInteraction,
-    handlePointerLeave,
     handleStrokePointerDown,
     handleStrokePointerEnter,
     getSvgPathFromPoints,
