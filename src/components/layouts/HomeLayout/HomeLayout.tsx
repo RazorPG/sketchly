@@ -8,11 +8,11 @@ type PropTypes = {
 
 function HomeLayout({ children }: PropTypes) {
   return (
-    <div className="flex flex-col min-h-screen">
+    <>
       <Navbar />
       {children}
       <Footer />
-    </div>
+    </>
   )
 }
 

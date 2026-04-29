@@ -9,6 +9,8 @@ import {
   PopoverContent,
   Slider,
   Label,
+  Modal,
+  Button,
 } from "@heroui/react"
 import useLeftToolbar from "./useLeftToolbar"
 
@@ -21,7 +23,7 @@ export default function LeftToolbar() {
     strokeWidth,
     setStrokeWidth,
     clearCanvas,
-    downloadAsJpeg
+    downloadAsJpeg,
   } = useLeftToolbar()
 
   return (
@@ -64,7 +66,7 @@ export default function LeftToolbar() {
           title="Change color"
         />
         <div
-          className="w-6 h-6 border border-gray-300 shadow-sm pointer-events-none group-hover:scale-110 transition-transform flex-shrink-0"
+          className="w-6 h-6 border border-gray-300 shadow-sm pointer-events-none group-hover:scale-110 transition-transform shrink-0"
           style={{ backgroundColor: strokeColor }}
         ></div>
       </div>
@@ -111,14 +113,46 @@ export default function LeftToolbar() {
       <div className="w-6 border-b border-gray-200 my-1"></div>
 
       {/* Actions */}
-      <button 
-        onClick={clearCanvas}
-        title="Clear canvas"
-        className="p-2 text-gray-500 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors cursor-pointer"
-      >
-        <FiTrash2 className="text-lg" />
-      </button>
-      <button 
+      <Modal>
+        <Button className="p-2 text-gray-500 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors cursor-pointer">
+          <FiTrash2 className="text-lg" />
+        </Button>
+        <Modal.Backdrop>
+          <Modal.Container>
+            <Modal.Dialog className="sm:max-w-[360px]">
+              <Modal.CloseTrigger />
+              <Modal.Header>
+                <Modal.Icon className="bg-default text-foreground">
+                  <FiTrash2 className="size-5" />
+                </Modal.Icon>
+                <Modal.Heading>Clear Canvas</Modal.Heading>
+              </Modal.Header>
+              <Modal.Body>
+                <p>
+                  Apakah Anda yakin ingin menghapus semua coretan?{" "}
+                  <span className="font-semibold text-red-600">
+                    Aksi ini tidak dapat dibatalkan.
+                  </span>
+                </p>
+              </Modal.Body>
+              <Modal.Footer>
+                <Button slot="close" variant="secondary">
+                  Batal
+                </Button>
+                <Button
+                  slot="close"
+                  onPress={clearCanvas}
+                  variant="danger-soft"
+                >
+                  Hapus Semua
+                </Button>
+              </Modal.Footer>
+            </Modal.Dialog>
+          </Modal.Container>
+        </Modal.Backdrop>
+      </Modal>
+
+      <button
         onClick={downloadAsJpeg}
         title="Download drawing"
         className="p-2 text-gray-500 hover:text-gray-800 hover:bg-gray-100 rounded-lg transition-colors cursor-pointer"

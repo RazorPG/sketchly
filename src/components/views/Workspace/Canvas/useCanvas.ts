@@ -1,8 +1,13 @@
 import { useState, useRef, PointerEvent } from "react"
-import { useWorkspace, Point, Stroke } from "../../../../contexts/WorkspaceContext"
+import {
+  useWorkspace,
+  Point,
+  Stroke,
+} from "../../../../contexts/WorkspaceContext"
 
 export default function useCanvas() {
-  const { activeTool, strokeColor, strokeWidth, strokes, setStrokes } = useWorkspace()
+  const { activeTool, strokeColor, strokeWidth, strokes, setStrokes, zoom } =
+    useWorkspace()
   const [currentPoints, setCurrentPoints] = useState<Point[]>([])
   const isDrawing = useRef(false)
   const isPanning = useRef(false)
@@ -12,8 +17,8 @@ export default function useCanvas() {
     const svg = e.currentTarget
     const rect = svg.getBoundingClientRect()
     return {
-      x: e.clientX - rect.left,
-      y: e.clientY - rect.top
+      x: (e.clientX - rect.left) / zoom,
+      y: (e.clientY - rect.top) / zoom,
     }
   }
 
@@ -35,7 +40,7 @@ export default function useCanvas() {
       const newPoint = getCoordinates(e)
       setCurrentPoints(prev => [...prev, newPoint])
     } else if (activeTool === "hand" && isPanning.current) {
-      const container = e.currentTarget.closest(".overflow-auto")
+      const container = document.getElementById("canvas-container")
       if (container) {
         const dx = e.clientX - lastPanPoint.current.x
         const dy = e.clientY - lastPanPoint.current.y
@@ -55,25 +60,34 @@ export default function useCanvas() {
     if (isDrawing.current && activeTool === "pen") {
       isDrawing.current = false
       if (currentPoints.length > 0) {
-        setStrokes(prev => [...prev, { 
-          id: Date.now().toString(), 
-          points: currentPoints,
-          color: strokeColor,
-          width: strokeWidth
-        }])
+        setStrokes(prev => [
+          ...prev,
+          {
+            id: Date.now().toString(),
+            points: currentPoints,
+            color: strokeColor,
+            width: strokeWidth,
+          },
+        ])
         setCurrentPoints([])
       }
     }
     isPanning.current = false
   }
 
-  const handleStrokePointerDown = (e: PointerEvent<SVGPathElement>, id: string) => {
+  const handleStrokePointerDown = (
+    e: PointerEvent<SVGPathElement>,
+    id: string
+  ) => {
     if (activeTool === "eraser") {
       setStrokes(prev => prev.filter(s => s.id !== id))
     }
   }
 
-  const handleStrokePointerEnter = (e: PointerEvent<SVGPathElement>, id: string) => {
+  const handleStrokePointerEnter = (
+    e: PointerEvent<SVGPathElement>,
+    id: string
+  ) => {
     if (activeTool === "eraser" && (e.buttons === 1 || e.pressure > 0)) {
       setStrokes(prev => prev.filter(s => s.id !== id))
     }
@@ -98,6 +112,6 @@ export default function useCanvas() {
     handleStrokePointerDown,
     handleStrokePointerEnter,
     getSvgPathFromPoints,
-    activeTool
+    activeTool,
   }
 }

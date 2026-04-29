@@ -9,7 +9,7 @@ export default function useLeftToolbar() {
     setStrokeColor,
     strokeWidth,
     setStrokeWidth,
-    setStrokes
+    clearHistory,
   } = useWorkspace()
 
   const setTool = (tool: Tool) => {
@@ -21,9 +21,7 @@ export default function useLeftToolbar() {
   }
 
   const clearCanvas = () => {
-    if (window.confirm("Are you sure you want to clear all drawings?")) {
-      setStrokes([])
-    }
+    clearHistory()
   }
 
   const downloadAsJpeg = () => {
@@ -33,7 +31,7 @@ export default function useLeftToolbar() {
     const canvas = document.createElement("canvas")
     const ctx = canvas.getContext("2d")
     const rect = svgElement.getBoundingClientRect()
-    
+
     canvas.width = rect.width
     canvas.height = rect.height
     if (ctx) {
@@ -44,12 +42,12 @@ export default function useLeftToolbar() {
     const svgData = new XMLSerializer().serializeToString(svgElement)
     const blob = new Blob([svgData], { type: "image/svg+xml;charset=utf-8" })
     const url = URL.createObjectURL(blob)
-    
+
     const img = new Image()
     img.onload = () => {
       ctx?.drawImage(img, 0, 0)
       URL.revokeObjectURL(url)
-      
+
       const jpegUrl = canvas.toDataURL("image/jpeg", 0.9)
       const link = document.createElement("a")
       link.href = jpegUrl
@@ -67,6 +65,6 @@ export default function useLeftToolbar() {
     strokeWidth,
     setStrokeWidth,
     clearCanvas,
-    downloadAsJpeg
+    downloadAsJpeg,
   }
 }

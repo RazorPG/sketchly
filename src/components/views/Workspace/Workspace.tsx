@@ -11,7 +11,10 @@ function Workspace() {
         <LeftToolbar />
         <RightToolbar />
         <BottomToolbar />
-        <div className="w-full h-full flex-1 overflow-auto p-4 sm:p-8">
+        <div
+          id="canvas-container"
+          className="w-full h-full flex-1 overflow-hidden p-4 sm:p-8"
+        >
           <div className="w-full h-full flex items-center justify-center min-w-max min-h-max">
             <Canvas />
           </div>
