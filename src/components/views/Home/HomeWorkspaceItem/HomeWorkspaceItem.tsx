@@ -33,7 +33,10 @@ function HomeWorkspaceItem({ title, id, updateAt }: Props) {
   } = useHomeWorkspaceItem()
 
   return (
-    <div className="flex flex-col items-start justify-between border-2 border-gray-200 rounded-xl overflow-hidden w-full h-56">
+    <div
+      suppressHydrationWarning
+      className="flex flex-col items-start justify-between border-2 border-gray-200 rounded-xl overflow-hidden w-full h-56"
+    >
       <Link
         href={`/workspace/${id}`}
         className="w-full h-full flex items-center justify-center bg-gray-50 cursor-pointer"

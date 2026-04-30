@@ -26,11 +26,13 @@ interface WorkspaceContextType {
   setStrokeWidth: (width: number) => void
   strokes: Stroke[]
   setStrokes: React.Dispatch<React.SetStateAction<Stroke[]>>
+  history: HistoryState
   undo: () => void
   redo: () => void
   canUndo: boolean
   canRedo: boolean
   clearHistory: () => void
+  setHistoryState: (history: HistoryState) => void
   zoom: number
   setZoom: React.Dispatch<React.SetStateAction<number>>
 }
@@ -99,6 +101,10 @@ export function WorkspaceProvider({ children }: { children: ReactNode }) {
     })
   }
 
+  const setHistoryState = (newState: HistoryState) => {
+    setHistory(newState)
+  }
+
   return (
     <WorkspaceContext.Provider
       value={{
@@ -110,11 +116,13 @@ export function WorkspaceProvider({ children }: { children: ReactNode }) {
         setStrokeWidth,
         strokes: history.present,
         setStrokes: handleSetStrokes,
+        history,
         undo,
         redo,
         canUndo: history.past.length > 0,
         canRedo: history.future.length > 0,
         clearHistory,
+        setHistoryState,
         zoom,
         setZoom,
       }}

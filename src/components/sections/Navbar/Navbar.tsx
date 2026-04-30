@@ -3,7 +3,10 @@ import { FaPalette } from "react-icons/fa"
 
 export default function Navbar() {
   return (
-    <nav className="sticky top-0 z-50 flex bg-white px-4 py-3 h-16 border-b border-gray-300">
+    <nav
+      suppressHydrationWarning
+      className="sticky top-0 z-50 flex bg-white px-4 py-3 h-16 border-b border-gray-300"
+    >
       <div className="mx-auto max-w-7xl w-full flex justify-between items-center">
         <div className="flex items-center gap-2">
           <div className="bg-black text-white p-2 rounded-xl flex items-center justify-center">

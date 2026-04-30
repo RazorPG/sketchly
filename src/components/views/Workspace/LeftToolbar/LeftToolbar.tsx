@@ -32,6 +32,7 @@ export default function fLeftToolbar() {
     <div className="absolute left-4 top-1/2 -translate-y-1/2 bg-white rounded-xl shadow-md border border-gray-100 p-2 flex flex-col items-center gap-3 w-15 z-10">
       {/* Tools */}
       <button
+        suppressHydrationWarning
         onClick={() => setTool("pen")}
         className={`p-2 hover:text-gray-800 hover:bg-gray-100 cursor-pointer rounded-lg transition-colors ${
           activeTool === "pen"
@@ -43,6 +44,7 @@ export default function fLeftToolbar() {
       </button>
 
       <button
+        suppressHydrationWarning
         onClick={() => setTool("eraser")}
         className={`p-2 hover:text-gray-800 hover:bg-gray-100 rounded-lg transition-colors cursor-pointer ${activeTool === "eraser" ? "bg-blue-50 text-blue-600" : "text-gray-500 hover:text-gray-800 hover:bg-gray-100"}`}
       >
@@ -50,6 +52,7 @@ export default function fLeftToolbar() {
       </button>
 
       <button
+        suppressHydrationWarning
         onClick={() => setTool("hand")}
         className={`p-2 hover:text-gray-800 hover:bg-gray-100 rounded-lg transition-colors cursor-pointer ${activeTool === "hand" ? "bg-blue-50 text-blue-600" : "text-gray-500 hover:text-gray-800 hover:bg-gray-100"}`}
       >
@@ -74,8 +77,9 @@ export default function fLeftToolbar() {
       </div>
 
       <Popover>
-        <PopoverTrigger>
+        <PopoverTrigger suppressHydrationWarning>
           <button
+            suppressHydrationWarning
             className="p-2 w-full flex items-center justify-center hover:bg-gray-100 rounded-lg transition-colors cursor-pointer"
             title="Change brush size"
           >
@@ -114,14 +118,16 @@ export default function fLeftToolbar() {
 
       <div className="w-6 border-b border-gray-200 my-1"></div>
 
-      <Button
-        onPress={() => setIsOpenModal(true)}
+      <button
+        suppressHydrationWarning
+        onClick={() => setIsOpenModal(true)}
         className="p-2 text-gray-500 bg-transparent hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors cursor-pointer"
       >
         <FiTrash2 className="text-lg" />
-      </Button>
+      </button>
 
       <button
+        suppressHydrationWarning
         onClick={downloadAsJpeg}
         title="Download drawing"
         className="p-2 text-gray-500 hover:text-gray-800 hover:bg-gray-100 rounded-lg transition-colors cursor-pointer"

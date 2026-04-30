@@ -7,6 +7,7 @@ function HomeActionBlank() {
   const { handleCreateWorkspace } = useHomeActionBlank()
   return (
     <button
+      suppressHydrationWarning
       onClick={handleCreateWorkspace}
       className="flex flex-col items-center justify-center gap-4 border-2 border-dashed border-gray-300 rounded-xl p-4 w-full h-56"
     >
