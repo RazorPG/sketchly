@@ -1,4 +1,4 @@
-import { useWorkspace, Tool } from "../../../../contexts/WorkspaceContext"
+import { useWorkspaceContext, Tool } from "@/contexts/WorkspaceContext"
 import React, { useState } from "react"
 
 export default function useLeftToolbar() {
@@ -10,7 +10,7 @@ export default function useLeftToolbar() {
     strokeWidth,
     setStrokeWidth,
     clearHistory,
-  } = useWorkspace()
+  } = useWorkspaceContext()
 
   const [isOpenModal, setIsOpenModal] = useState<boolean>(false)
 

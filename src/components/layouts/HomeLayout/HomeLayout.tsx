@@ -1,6 +1,7 @@
 import { ReactNode } from "react"
 import Navbar from "../../sections/Navbar"
 import Footer from "../../sections/Footer"
+import { HomeProvider } from "@/contexts/HomeContext"
 
 type PropTypes = {
   children: ReactNode
@@ -9,9 +10,11 @@ type PropTypes = {
 function HomeLayout({ children }: PropTypes) {
   return (
     <>
-      <Navbar />
-      {children}
-      <Footer />
+      <HomeProvider>
+        <Navbar />
+        {children}
+        <Footer />
+      </HomeProvider>
     </>
   )
 }

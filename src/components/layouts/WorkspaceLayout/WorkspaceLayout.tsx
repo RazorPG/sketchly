@@ -1,5 +1,6 @@
 import { ReactNode } from "react"
 import WorkspaceNavbar from "../../sections/WorkspaceNavbar"
+import { WorkspaceProvider } from "@/contexts/WorkspaceContext"
 
 type PropTypes = {
   children: ReactNode
@@ -7,10 +8,12 @@ type PropTypes = {
 
 function WorkspaceLayout({ children }: PropTypes) {
   return (
-    <div className="flex flex-col h-screen overflow-hidden bg-[#f3f2ef]">
-      <WorkspaceNavbar />
-      <main className="flex-1 relative overflow-hidden">{children}</main>
-    </div>
+    <WorkspaceProvider>
+      <div className="flex flex-col h-screen overflow-hidden bg-[#f3f2ef]">
+        <WorkspaceNavbar />
+        <main className="flex-1 relative overflow-hidden">{children}</main>
+      </div>
+    </WorkspaceProvider>
   )
 }
 

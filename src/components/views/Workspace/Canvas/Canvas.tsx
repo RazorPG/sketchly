@@ -2,7 +2,7 @@
 
 import { useEffect } from "react"
 import useCanvas from "./useCanvas"
-import { useWorkspace } from "../../../../contexts/WorkspaceContext"
+import { useWorkspaceContext } from "../../../../contexts/WorkspaceContext"
 
 export default function Canvas() {
   const {
@@ -17,7 +17,7 @@ export default function Canvas() {
     activeTool,
   } = useCanvas()
 
-  const { strokeColor, strokeWidth, zoom, setZoom } = useWorkspace()
+  const { strokeColor, strokeWidth, zoom, setZoom } = useWorkspaceContext()
 
   useEffect(() => {
     const container = document.getElementById("canvas-container")
@@ -59,7 +59,7 @@ export default function Canvas() {
       style={{ width: 1024 * zoom, height: 768 * zoom }}
     >
       <div
-        className={`absolute top-0 left-0 w-[1024px] h-[768px] bg-white shadow-[0_2px_10px_rgba(0,0,0,0.05)] rounded-lg transition-transform origin-top-left ${cursorClass}`}
+        className={`absolute top-0 left-0 w-5xl h-192 bg-white shadow-[0_2px_10px_rgba(0,0,0,0.05)] rounded-lg transition-transform origin-top-left ${cursorClass}`}
         style={{ ...cursorStyle, transform: `scale(${zoom})` }}
       >
         <svg

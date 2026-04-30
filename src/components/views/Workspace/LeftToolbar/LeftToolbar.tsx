@@ -14,7 +14,7 @@ import {
 } from "@heroui/react"
 import useLeftToolbar from "./useLeftToolbar"
 
-export default function LeftToolbar() {
+export default function fLeftToolbar() {
   const {
     activeTool,
     setTool,

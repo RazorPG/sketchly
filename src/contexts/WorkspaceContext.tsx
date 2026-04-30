@@ -44,7 +44,6 @@ export function WorkspaceProvider({ children }: { children: ReactNode }) {
   const [strokeColor, setStrokeColor] = useState<string>("#000000")
   const [strokeWidth, setStrokeWidth] = useState<number>(4)
   const [zoom, setZoom] = useState<number>(1)
-
   const [history, setHistory] = useState<HistoryState>({
     past: [],
     present: [],
@@ -125,7 +124,7 @@ export function WorkspaceProvider({ children }: { children: ReactNode }) {
   )
 }
 
-export function useWorkspace() {
+export function useWorkspaceContext() {
   const context = useContext(WorkspaceContext)
   if (!context) {
     throw new Error("useWorkspace must be used within a WorkspaceProvider")

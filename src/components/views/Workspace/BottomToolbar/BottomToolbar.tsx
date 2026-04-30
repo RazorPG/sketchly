@@ -1,10 +1,10 @@
 "use client"
 
 import { FiCornerUpLeft, FiCornerUpRight } from "react-icons/fi"
-import { useWorkspace } from "../../../../contexts/WorkspaceContext"
+import { useWorkspaceContext } from "../../../../contexts/WorkspaceContext"
 
 export default function BottomToolbar() {
-  const { strokes, undo, redo, canUndo, canRedo } = useWorkspace()
+  const { strokes, undo, redo, canUndo, canRedo } = useWorkspaceContext()
 
   return (
     <div className="absolute bottom-4 left-1/2 -translate-x-1/2 bg-white rounded-xl shadow-md border border-gray-100 py-2 px-3 flex items-center gap-3 z-10">

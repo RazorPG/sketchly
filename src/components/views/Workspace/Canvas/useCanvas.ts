@@ -1,13 +1,10 @@
 import { useState, useRef, PointerEvent } from "react"
-import {
-  useWorkspace,
-  Point,
-  Stroke,
-} from "../../../../contexts/WorkspaceContext"
+import { useWorkspaceContext } from "@/contexts/WorkspaceContext"
+import { Point, Stroke } from "../../../../contexts/WorkspaceContext"
 
 export default function useCanvas() {
   const { activeTool, strokeColor, strokeWidth, strokes, setStrokes, zoom } =
-    useWorkspace()
+    useWorkspaceContext()
   const [currentPoints, setCurrentPoints] = useState<Point[]>([])
   const isDrawing = useRef(false)
   const isPanning = useRef(false)

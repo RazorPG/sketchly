@@ -1,7 +1,7 @@
-import { useWorkspace } from "../../../../contexts/WorkspaceContext"
+import { useWorkspaceContext } from "../../../../contexts/WorkspaceContext"
 
 export default function useRightToolbar() {
-  const { zoom, setZoom } = useWorkspace()
+  const { zoom, setZoom } = useWorkspaceContext()
 
   const zoomIn = () => {
     setZoom(prev => Math.min(prev + 0.1, 3)) // Max 300%
