@@ -24,6 +24,8 @@ export default function LeftToolbar() {
     setStrokeWidth,
     clearCanvas,
     downloadAsJpeg,
+    isOpenModal,
+    setIsOpenModal,
   } = useLeftToolbar()
 
   return (
@@ -112,14 +114,26 @@ export default function LeftToolbar() {
 
       <div className="w-6 border-b border-gray-200 my-1"></div>
 
-      {/* Actions */}
-      <Modal>
-        <Button className="p-2 text-gray-500 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors cursor-pointer">
-          <FiTrash2 className="text-lg" />
-        </Button>
+      <Button
+        onPress={() => setIsOpenModal(true)}
+        className="p-2 text-gray-500 bg-transparent hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors cursor-pointer"
+      >
+        <FiTrash2 className="text-lg" />
+      </Button>
+
+      <button
+        onClick={downloadAsJpeg}
+        title="Download drawing"
+        className="p-2 text-gray-500 hover:text-gray-800 hover:bg-gray-100 rounded-lg transition-colors cursor-pointer"
+      >
+        <FiDownload className="text-lg" />
+      </button>
+
+      {/* modal action clear canvas */}
+      <Modal isOpen={isOpenModal} onOpenChange={() => setIsOpenModal(false)}>
         <Modal.Backdrop>
           <Modal.Container>
-            <Modal.Dialog className="sm:max-w-[360px]">
+            <Modal.Dialog className="sm:max-w-90">
               <Modal.CloseTrigger />
               <Modal.Header>
                 <Modal.Icon className="bg-default text-foreground">
@@ -136,12 +150,17 @@ export default function LeftToolbar() {
                 </p>
               </Modal.Body>
               <Modal.Footer>
-                <Button slot="close" variant="secondary">
+                <Button
+                  onPress={() => setIsOpenModal(false)}
+                  variant="secondary"
+                >
                   Batal
                 </Button>
                 <Button
-                  slot="close"
-                  onPress={clearCanvas}
+                  onPress={() => {
+                    clearCanvas()
+                    setIsOpenModal(false)
+                  }}
                   variant="danger-soft"
                 >
                   Hapus Semua
@@ -151,14 +170,6 @@ export default function LeftToolbar() {
           </Modal.Container>
         </Modal.Backdrop>
       </Modal>
-
-      <button
-        onClick={downloadAsJpeg}
-        title="Download drawing"
-        className="p-2 text-gray-500 hover:text-gray-800 hover:bg-gray-100 rounded-lg transition-colors cursor-pointer"
-      >
-        <FiDownload className="text-lg" />
-      </button>
     </div>
   )
 }

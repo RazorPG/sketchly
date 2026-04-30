@@ -1,5 +1,5 @@
 import { useWorkspace, Tool } from "../../../../contexts/WorkspaceContext"
-import React from "react"
+import React, { useState } from "react"
 
 export default function useLeftToolbar() {
   const {
@@ -11,6 +11,8 @@ export default function useLeftToolbar() {
     setStrokeWidth,
     clearHistory,
   } = useWorkspace()
+
+  const [isOpenModal, setIsOpenModal] = useState<boolean>(false)
 
   const setTool = (tool: Tool) => {
     setActiveTool(tool)
@@ -66,5 +68,7 @@ export default function useLeftToolbar() {
     setStrokeWidth,
     clearCanvas,
     downloadAsJpeg,
+    isOpenModal,
+    setIsOpenModal,
   }
 }

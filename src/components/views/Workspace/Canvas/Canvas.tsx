@@ -25,7 +25,7 @@ export default function Canvas() {
 
     const handleWheel = (e: WheelEvent) => {
       if (e.ctrlKey) {
-        e.preventDefault() // Prevent browser zoom
+        e.preventDefault()
         if (e.deltaY < 0) {
           setZoom(prev => Math.min(prev + 0.1, 3))
         } else {
@@ -85,7 +85,7 @@ export default function Canvas() {
               onPointerEnter={e => handleStrokePointerEnter(e, stroke.id)}
               className={
                 activeTool === "eraser"
-                  ? "hover:stroke-red-500 hover:stroke-[8px] transition-all duration-150 cursor-pointer"
+                  ? "hover:stroke-red-500 hover:drop-shadow-[0_0_6px_rgba(255,0,0,0.7)] transition-all duration-150"
                   : ""
               }
             />
