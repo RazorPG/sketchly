@@ -14,8 +14,8 @@ export async function GET(
 
     const { id: workspaceId } = await params
 
-    const workspace = await prisma.workspace.findUnique({
-      where: { id_ownerId: { ownerId: userId, id: workspaceId } },
+    const workspace = await prisma.workspace.findFirst({
+      where: { ownerId: userId, id: workspaceId },
     })
 
     if (!workspace) {
@@ -60,7 +60,7 @@ export async function PUT(
     if (title !== undefined) data.title = title
 
     const workspace = await prisma.workspace.update({
-      where: { id_ownerId: { ownerId: userId, id: workspaceId } },
+      where: { id: workspaceId },
       data,
     })
 
