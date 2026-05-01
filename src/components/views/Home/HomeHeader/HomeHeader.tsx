@@ -10,7 +10,7 @@ function HomeHeader() {
           Your projects
         </h2>
         <p className="text-sm text-gray-500">
-          {workspaces.length || 0} sketch saved
+          {workspaces.length || 0} workspaces saved
         </p>
       </div>
       <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 w-full sm:w-auto">

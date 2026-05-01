@@ -149,9 +149,9 @@ export default function fLeftToolbar() {
               </Modal.Header>
               <Modal.Body>
                 <p>
-                  Apakah Anda yakin ingin menghapus semua coretan?{" "}
+                  Are you sure you want to clear all canvas?{" "}
                   <span className="font-semibold text-red-600">
-                    Aksi ini tidak dapat dibatalkan.
+                    This action cannot be undone.
                   </span>
                 </p>
               </Modal.Body>
@@ -160,7 +160,7 @@ export default function fLeftToolbar() {
                   onPress={() => setIsOpenModal(false)}
                   variant="secondary"
                 >
-                  Batal
+                  Cancel
                 </Button>
                 <Button
                   onPress={() => {
@@ -169,7 +169,7 @@ export default function fLeftToolbar() {
                   }}
                   variant="danger-soft"
                 >
-                  Hapus Semua
+                  Clear All
                 </Button>
               </Modal.Footer>
             </Modal.Dialog>

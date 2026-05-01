@@ -43,7 +43,7 @@ export async function POST(req: NextRequest) {
         const email = data.email_addresses?.[0]?.email_address
 
         if (!email) {
-          console.error("Email tidak ditemukan:", data)
+          console.error("Email not found:", data)
           return new Response("Email missing", { status: 400 })
         }
 

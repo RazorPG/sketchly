@@ -1,5 +1,5 @@
 import { Show, SignInButton, UserButton } from "@clerk/nextjs"
-import { FaPalette } from "react-icons/fa"
+import Image from "next/image"
 
 export default function Navbar() {
   return (
@@ -9,8 +9,13 @@ export default function Navbar() {
     >
       <div className="mx-auto max-w-7xl w-full flex justify-between items-center">
         <div className="flex items-center gap-2">
-          <div className="bg-black text-white p-2 rounded-xl flex items-center justify-center">
-            <FaPalette className="text-xl" />
+          <div className="rounded-xl flex items-center justify-center">
+            <img
+              src="images/logo.png"
+              alt="Sketchly Logo"
+              width={40}
+              height={40}
+            />
           </div>
           <span className="text-lg font-medium text-black">Sketchly</span>
         </div>

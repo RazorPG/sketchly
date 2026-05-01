@@ -46,8 +46,8 @@ export async function PUT(
 
     const { id: workspaceId } = await params
 
-    const { strokes, history } = await req.json()
-    if (strokes === undefined && history === undefined) {
+    const { strokes, history, title } = await req.json()
+    if (strokes === undefined && history === undefined && title === undefined) {
       return NextResponse.json(
         { message: "No update data provided" },
         { status: 400 }
@@ -57,6 +57,7 @@ export async function PUT(
     const data: any = {}
     if (strokes !== undefined) data.strokes = strokes
     if (history !== undefined) data.history = history
+    if (title !== undefined) data.title = title
 
     const workspace = await prisma.workspace.update({
       where: { id_ownerId: { ownerId: userId, id: workspaceId } },

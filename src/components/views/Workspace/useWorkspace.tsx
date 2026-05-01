@@ -1,21 +1,39 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import { useEffect, useState, useRef } from "react"
 import { useParams } from "next/navigation"
 import axios from "axios"
 import { useWorkspaceContext } from "@/contexts/WorkspaceContext"
+import { useAuth } from "@clerk/nextjs"
 
 export function useWorkspace() {
   const params = useParams()
+  const { isLoaded, isSignedIn } = useAuth()
   const { setHistoryState, setStrokes } = useWorkspaceContext()
   const [isLoading, setIsLoading] = useState(true)
+  const hasFetched = useRef(false)
 
   useEffect(() => {
+    // Wait until Clerk auth status is loaded
+    if (!isLoaded) return
+
+    // If no session (not logged in), disable loading so user can draw (without saving)
+    if (!isSignedIn) {
+      setIsLoading(false)
+      return
+    }
+
     const id = params?.id
-    if (!id) return
+    if (!id) {
+      setIsLoading(false)
+      return
+    }
+
+    if (hasFetched.current) return
 
     const fetchWorkspace = async () => {
       try {
+        hasFetched.current = true
         setIsLoading(true)
         const response = await axios.get(`/api/workspaces/${id}`)
         const workspace = response.data
@@ -35,7 +53,7 @@ export function useWorkspace() {
     }
 
     fetchWorkspace()
-  }, [params?.id])
+  }, [isLoaded, isSignedIn, params?.id])
 
   return { isLoading }
 }

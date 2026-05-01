@@ -7,7 +7,7 @@ import Link from "next/link"
 import useWorkspaceNavbar from "./useWorkspaceNavbar"
 
 export default function WorkspaceNavbar() {
-  const { handleSave } = useWorkspaceNavbar()
+  const { handleSave, title } = useWorkspaceNavbar()
 
   return (
     <nav
@@ -20,17 +20,21 @@ export default function WorkspaceNavbar() {
             <div className="flex items-center gap-2 border-r border-gray-200 pr-4">
               <Link
                 href="/"
-                className="bg-black text-white p-1.5 rounded-lg flex items-center justify-center cursor-pointer"
+                className="flex items-center justify-center cursor-pointer"
               >
-                <FaPalette className="text-sm" />
+                <img
+                  src="/images/logo.png"
+                  alt="Sketchly Logo"
+                  width={40}
+                  height={40}
+                />
               </Link>
               <span className="text-base font-medium text-black">Sketchly</span>
             </div>
 
             <Show when="signed-in">
               <button className="flex items-center gap-2 px-3 py-1.5 hover:bg-gray-100 rounded-lg transition-colors text-gray-700 font-medium text-sm ml-1">
-                <span>Untitled Sketch</span>
-                <FiChevronDown className="text-gray-500" />
+                <span>{title}</span>
               </button>
               <button
                 onClick={handleSave}

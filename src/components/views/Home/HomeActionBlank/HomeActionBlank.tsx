@@ -14,7 +14,7 @@ function HomeActionBlank() {
       <div className="flex justify-center items-center gap-2 bg-gray-100 p-2 rounded-full cursor-pointer">
         <FiPlus className="text-2xl text-gray-500" />
       </div>
-      <p className="text-lg font-medium text-gray-500">New Sketch</p>
+      <p className="text-lg font-medium text-gray-500">New Workspace</p>
     </button>
   )
 }
