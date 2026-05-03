@@ -32,9 +32,10 @@ const useWorkspaceNavbar = () => {
     try {
       await axios.put(`/api/workspaces/${workspaceId}`, { strokes, history })
       toast.success("Workspace saved successfully!")
-    } catch (error) {
+    } catch (error: any) {
       console.error(error)
-      toast.danger("Failed to save workspace.")
+      const status = error.response?.status || "Unknown"
+      toast.danger(`Failed to save workspace. (Error ${status})`)
     }
   }
 
