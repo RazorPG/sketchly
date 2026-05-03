@@ -5,11 +5,8 @@ import {
   Description,
   Dropdown,
   Header,
-  Input,
   Label,
   Modal,
-  Surface,
-  TextField,
 } from "@heroui/react"
 import Link from "next/link"
 import { BiPencil, BiTrash } from "react-icons/bi"
@@ -27,10 +24,15 @@ function HomeWorkspaceItem({ title, id, updateAt }: Props) {
     handleDeleteWorkspace,
     isOpenModal,
     setIsOpenModal,
-    handleRenameWorkspace,
     kindModal,
     setKindModal,
-  } = useHomeWorkspaceItem()
+    isEditing,
+    setIsEditing,
+    editTitle,
+    setEditTitle,
+    inputRef,
+    submitRename,
+  } = useHomeWorkspaceItem(title, id)
 
   return (
     <div
@@ -44,113 +46,85 @@ function HomeWorkspaceItem({ title, id, updateAt }: Props) {
         <FiImage className="text-4xl text-gray-300" />
       </Link>
       <div className="flex items-center justify-between w-full border-t border-gray-200 p-4">
-        <div className="flex flex-col text-left">
-          <h3 className="text-lg font-medium text-gray-900">{title}</h3>
+        <div className="flex flex-col text-left w-full mr-2">
+          {isEditing ? (
+            <input
+              ref={inputRef}
+              type="text"
+              value={editTitle}
+              onChange={e => setEditTitle(e.target.value)}
+              onBlur={submitRename}
+              onKeyDown={e => {
+                if (e.key === "Enter") {
+                  submitRename()
+                } else if (e.key === "Escape") {
+                  setEditTitle(title)
+                  setIsEditing(false)
+                }
+              }}
+              className="text-lg font-medium text-gray-900 border-b border-gray-400 focus:outline-none focus:border-blue-500 bg-transparent mb-[2px]"
+            />
+          ) : (
+            <h3 className="text-lg font-medium text-gray-900 truncate">
+              {title}
+            </h3>
+          )}
           <p className="text-sm text-gray-500">
             {new Date(updateAt).toLocaleDateString()}
           </p>
         </div>
 
-        <Dropdown>
-          <Button
-            aria-label="Menu"
-            className="p-2 rounded-full hover:bg-gray-100 cursor-pointer"
-            variant="ghost"
-          >
-            <FiMoreHorizontal className="text-lg" />
-          </Button>
-          <Dropdown.Popover>
-            <Dropdown.Menu>
-              <Dropdown.Section>
-                <Header>Actions</Header>
-                <Dropdown.Item
-                  id="edit-file"
-                  textValue="Edit file"
-                  onAction={() => {
-                    setIsOpenModal(true)
-                    setKindModal("rename")
-                  }}
-                >
-                  <div className="flex h-8 items-start justify-center pt-px">
-                    <BiPencil className="size-4 shrink-0 text-muted" />
-                  </div>
-                  <div className="flex flex-col">
-                    <Label>Rename</Label>
-                    <Description>Rename workspace</Description>
-                  </div>
-                </Dropdown.Item>
-                <Dropdown.Item
-                  id="delete-file"
-                  textValue="Delete file"
-                  variant="danger"
-                  onAction={() => {
-                    setIsOpenModal(true)
-                    setKindModal("delete")
-                  }}
-                >
-                  <div className="flex h-8 items-start justify-center pt-px">
-                    <BiTrash className="size-4 shrink-0 text-danger" />
-                  </div>
-                  <div className="flex flex-col">
-                    <Label>Delete workspace</Label>
-                    <Description>Move to trash</Description>
-                  </div>
-                </Dropdown.Item>
-              </Dropdown.Section>
-            </Dropdown.Menu>
-          </Dropdown.Popover>
-        </Dropdown>
+        {!isEditing && (
+          <Dropdown>
+            <Button
+              aria-label="Menu"
+              className="p-2 rounded-full hover:bg-gray-100 cursor-pointer"
+              variant="ghost"
+            >
+              <FiMoreHorizontal className="text-lg" />
+            </Button>
+            <Dropdown.Popover>
+              <Dropdown.Menu>
+                <Dropdown.Section>
+                  <Header>Actions</Header>
+                  <Dropdown.Item
+                    id="edit-file"
+                    textValue="Edit file"
+                    onAction={() => {
+                      setIsEditing(true)
+                    }}
+                  >
+                    <div className="flex h-8 items-start justify-center pt-px">
+                      <BiPencil className="size-4 shrink-0 text-muted" />
+                    </div>
+                    <div className="flex flex-col">
+                      <Label>Rename</Label>
+                      <Description>Rename workspace</Description>
+                    </div>
+                  </Dropdown.Item>
+                  <Dropdown.Item
+                    id="delete-file"
+                    textValue="Delete file"
+                    variant="danger"
+                    onAction={() => {
+                      setIsOpenModal(true)
+                      setKindModal("delete")
+                    }}
+                  >
+                    <div className="flex h-8 items-start justify-center pt-px">
+                      <BiTrash className="size-4 shrink-0 text-danger" />
+                    </div>
+                    <div className="flex flex-col">
+                      <Label>Delete workspace</Label>
+                      <Description>Move to trash</Description>
+                    </div>
+                  </Dropdown.Item>
+                </Dropdown.Section>
+              </Dropdown.Menu>
+            </Dropdown.Popover>
+          </Dropdown>
+        )}
       </div>
-
-      {/* modal rename workspace */}
-      {kindModal === "rename" && (
-        <Modal isOpen={isOpenModal} onOpenChange={() => setIsOpenModal(false)}>
-          <Modal.Backdrop>
-            <Modal.Container placement="auto">
-              <Modal.Dialog className="sm:max-w-md">
-                <Modal.CloseTrigger />
-                <Modal.Body className="p-6">
-                  <Surface variant="default">
-                    <form
-                      id="rename-form"
-                      className="flex flex-col gap-4"
-                      onSubmit={e => {
-                        setIsOpenModal(false)
-
-                        const form = e.currentTarget
-                        const input = form.elements.namedItem(
-                          "name"
-                        ) as HTMLInputElement
-                        const newTitle = input.value
-
-                        handleRenameWorkspace(id, newTitle)
-                      }}
-                    >
-                      <TextField
-                        className="w-full"
-                        name="name"
-                        type="text"
-                        defaultValue={title}
-                      >
-                        <Label>Rename</Label>
-                        <Input placeholder="rename workspace" />
-                      </TextField>
-                    </form>
-                  </Surface>
-                </Modal.Body>
-                <Modal.Footer>
-                  <Button slot="close" variant="secondary">
-                    Cancel
-                  </Button>
-                  <Button type="submit" form="rename-form">
-                    Save
-                  </Button>
-                </Modal.Footer>
-              </Modal.Dialog>
-            </Modal.Container>
-          </Modal.Backdrop>
-        </Modal>
-      )}
 
       {/* modal delete workspace */}
       {kindModal === "delete" && (
@@ -177,7 +151,7 @@ function HomeWorkspaceItem({ title, id, updateAt }: Props) {
                   </Button>
                   <Button
                     onPress={() => {
-                      handleDeleteWorkspace(id)
+                      handleDeleteWorkspace()
                       setIsOpenModal(false)
                     }}
                     variant="danger-soft"

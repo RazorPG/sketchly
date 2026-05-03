@@ -1,13 +1,14 @@
 "use client"
 
 import { useEffect, useState, useRef } from "react"
-import { useParams } from "next/navigation"
+import { useParams, useRouter } from "next/navigation"
 import axios from "axios"
 import { useWorkspaceContext } from "@/contexts/WorkspaceContext"
 import { useAuth } from "@clerk/nextjs"
 
 export function useWorkspace() {
   const params = useParams()
+  const router = useRouter()
   const { isLoaded, isSignedIn } = useAuth()
   const { setHistoryState, setStrokes } = useWorkspaceContext()
   const [isLoading, setIsLoading] = useState(true)
@@ -45,8 +46,11 @@ export function useWorkspace() {
           // Fallback if only strokes are saved
           setStrokes(workspace.strokes)
         }
-      } catch (error) {
+      } catch (error: any) {
         console.error("Failed to fetch workspace:", error)
+        if (error.response?.status === 404) {
+          router.push("/workspace/not-found")
+        }
       } finally {
         setIsLoading(false)
       }

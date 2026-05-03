@@ -1,5 +1,5 @@
 import { Show, SignInButton, UserButton } from "@clerk/nextjs"
-import Image from "next/image"
+import Link from "next/link"
 
 export default function Navbar() {
   return (
@@ -10,12 +10,17 @@ export default function Navbar() {
       <div className="mx-auto max-w-7xl w-full flex justify-between items-center">
         <div className="flex items-center gap-2">
           <div className="rounded-xl flex items-center justify-center">
-            <img
-              src="images/logo.png"
-              alt="Sketchly Logo"
-              width={40}
-              height={40}
-            />
+            <Link
+              href="/"
+              className="flex items-center justify-center cursor-pointer"
+            >
+              <img
+                src="/images/logo.png"
+                alt="Sketchly Logo"
+                width={40}
+                height={40}
+              />
+            </Link>
           </div>
           <span className="text-lg font-medium text-black">Sketchly</span>
         </div>

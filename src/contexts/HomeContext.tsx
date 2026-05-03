@@ -7,6 +7,7 @@ import {
   useContext,
   useEffect,
   useState,
+  useRef,
   type Dispatch,
   type ReactNode,
   type SetStateAction,
@@ -15,6 +16,8 @@ import {
 interface HomeContextValue {
   workspaces: Workspace[]
   setWorkspaces: Dispatch<SetStateAction<Workspace[]>>
+  searchQuery: string
+  setSearchQuery: Dispatch<SetStateAction<string>>
   isLoading: boolean
 }
 
@@ -22,20 +25,50 @@ const HomeContext = createContext<HomeContextValue | null>(null)
 
 export function HomeProvider({ children }: { children: ReactNode }) {
   const [workspaces, setWorkspaces] = useState<Workspace[]>([])
+  const [searchQuery, setSearchQuery] = useState("")
   const [isLoading, setIsLoading] = useState(false)
+  const isMounted = useRef(false)
 
   useEffect(() => {
     const fetchWorkspaces = async () => {
       setIsLoading(true)
-      const res = await axios.get("/api/workspaces")
-      setWorkspaces(res.data)
-      setIsLoading(false)
+      try {
+        const res = await axios.get("/api/workspaces", {
+          params: { search: searchQuery },
+        })
+        setWorkspaces(res.data)
+      } catch (error) {
+        console.error(error)
+      } finally {
+        setIsLoading(false)
+      }
     }
-    fetchWorkspaces()
-  }, [])
+
+    if (!isMounted.current) {
+      // Fetch immediately on initial mount
+      fetchWorkspaces()
+      isMounted.current = true
+      return
+    }
+
+    // Apply 1.5s debounce for subsequent searches
+    const timeoutId = setTimeout(() => {
+      fetchWorkspaces()
+    }, 1500)
+
+    return () => clearTimeout(timeoutId)
+  }, [searchQuery])
 
   return (
-    <HomeContext.Provider value={{ workspaces, setWorkspaces, isLoading }}>
+    <HomeContext.Provider
+      value={{
+        workspaces,
+        setWorkspaces,
+        searchQuery,
+        setSearchQuery,
+        isLoading,
+      }}
+    >
       {children}
     </HomeContext.Provider>
   )

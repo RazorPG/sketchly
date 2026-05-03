@@ -31,8 +31,22 @@ export async function GET(req: Request) {
     if (!userId)
       return NextResponse.json({ message: "Unauthorized" }, { status: 401 })
 
+    const { searchParams } = new URL(req.url)
+    const search = searchParams.get("search")
+
+    const where: any = { ownerId: userId }
+    if (search) {
+      where.title = {
+        contains: search,
+        mode: "insensitive",
+      }
+    }
+
     const workspaces = await prisma.workspace.findMany({
-      where: { ownerId: userId },
+      where,
+      orderBy: {
+        createdAt: "desc",
+      },
     })
 
     return NextResponse.json(workspaces)

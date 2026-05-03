@@ -2,7 +2,7 @@ import SearchInput from "../../../ui/SearchInput"
 import useHome from "../useHome"
 
 function HomeHeader() {
-  const { workspaces } = useHome()
+  const { workspaces, searchQuery, setSearchQuery } = useHome()
   return (
     <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 w-full">
       <div className="flex flex-col gap-1">
@@ -14,7 +14,11 @@ function HomeHeader() {
         </p>
       </div>
       <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 w-full sm:w-auto">
-        <SearchInput placeholder="Search projects" />
+        <SearchInput
+          placeholder="Search projects"
+          value={searchQuery}
+          onChange={e => setSearchQuery(e.target.value)}
+        />
       </div>
     </div>
   )
